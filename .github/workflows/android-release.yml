@@ -42,6 +42,16 @@ jobs:
 
       - name: Configure release signing
         env:
+          KEYSTORE_BASE64: ${{ secrets.LITTLEGAMEMAKER_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.LITTLEGAMEMAKER_STORE_PASSWORD }}
+        run: |
+          : "${KEYSTORE_BASE64:?Missing LITTLEGAMEMAKER_KEYSTORE_BASE64}"
+          : "${STORE_PASSWORD:?Missing LITTLEGAMEMAKER_STORE_PASSWORD}"
+          umask 077
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > android/app/release-signing.p12
+          keytool -list -storetype PKCS12 -keystore android/app/release-signing.p12 -storepass:env STORE_PASSWORD -alias little-game-maker >/dev/null
+          printf 'storePassword=%s\n' "$STORE_PASSWORD" > android/key.properties
+          python3 .github/scripts/configure-signing.py
       - name: Build release APK
         run: flutter build apk --release
 
