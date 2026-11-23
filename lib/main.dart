@@ -827,7 +827,6 @@ class _GamePageState extends State<GamePage> {
     setState(() {
       cells = List<int>.from(project.cells);
       score = 0; moves = 0; lives = 3; paused = false; finished = false;
-      revealed.clear(); matched.clear(); firstCard = null; checkingCards = false;
       player = cells.indexOf(5); if (player < 0) player = 12;
       final platformStart = cells.indexOf(5);
       playerX = platformStart >= 0 ? platformStart % project.columns : 0;

@@ -235,8 +235,6 @@ class _GameTilePainter extends CustomPainter {
   }
 
 
-  static const inkColor = Color(0xFF332B4D);
-
   void _paintRoadCell(Canvas canvas, double w, double h) {
     if (isPlayer) {
       _round(canvas, Rect.fromLTWH(w * .23, h * .12, w * .54, h * .76), 9, const Color(0xFF3988E8));

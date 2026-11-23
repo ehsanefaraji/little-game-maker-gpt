@@ -224,11 +224,11 @@ class PlatformerPhysicsGame extends Forge2DGame<Forge2DWorld> {
       _worldHeight / 2,
     );
     final cameraBlend = 1 - math.exp(-5.5 * step);
-    camera.viewfinder.position = Vector2.lerp(
-      camera.viewfinder.position,
-      desiredCamera,
-      cameraBlend,
-    )!;
+    final currentCamera = camera.viewfinder.position;
+    camera.viewfinder.position = Vector2(
+      currentCamera.x + (desiredCamera.x - currentCamera.x) * cameraBlend,
+      currentCamera.y + (desiredCamera.y - currentCamera.y) * cameraBlend,
+    );
 
     for (final coin in List<_Pickup>.from(_coins)) {
       if ((coin.position - player.body.position).length < .95) {
@@ -582,7 +582,9 @@ class PlatformerPlayer extends BodyComponent<PlatformerPhysicsGame> {
   }
 
   void setFacingLeft(bool value) {
-    if (isLoaded) _sprite.isFlippedHorizontally = value;
+    if (!isLoaded) return;
+    final scale = _sprite.scale;
+    _sprite.scale = Vector2(value ? -scale.x.abs() : scale.x.abs(), scale.y);
   }
 }
 
@@ -755,7 +757,7 @@ class _PlatformerGameScreenState extends State<PlatformerGameScreen> {
             ],
           ),
           body: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
