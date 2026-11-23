@@ -95,8 +95,12 @@ class GameProject {
 
   List<int> composeLayers([int? stageIndex]) {
     final stage = (stageIndex ?? activeLevel).clamp(0, layersByLevel.length - 1).toInt();
-    final result = List<int>.filled(columns * rows, 0);
-    for (final layer in layersByLevel[stage]) {
+    return _composeLayerStack(layersByLevel[stage], columns * rows);
+  }
+
+  static List<int> _composeLayerStack(List<List<int>> layers, int length) {
+    final result = List<int>.filled(length, 0);
+    for (final layer in layers) {
       for (var i = 0; i < result.length; i++) {
         if (layer[i] == -1) {
           result[i] = 0;
@@ -255,12 +259,7 @@ class GameProject {
     final activeLayerValue = json['activeLayer'];
     final activeLayer = (activeLayerValue is num ? activeLayerValue.toInt() : 0)
         .clamp(0, levelLayers[activeLevel].length - 1).toInt();
-    final activeCells = List<int>.filled(expected, 0);
-    for (final layer in levelLayers[activeLevel]) {
-      for (var i = 0; i < expected; i++) {
-        if (layer[i] != 0) activeCells[i] = layer[i];
-      }
-    }
+    final activeCells = _composeLayerStack(levelLayers[activeLevel], expected);
     final characterValue = json['character'];
     final backgroundValue = json['background'];
     final nameValue = json['name']?.toString().trim() ?? '';
