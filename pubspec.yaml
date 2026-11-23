@@ -1,0 +1,25 @@
+name: little_game_maker
+description: A Persian offline game maker for children.
+publish_to: 'none'
+version: 3.1.0+11
+environment:
+  sdk: '>=3.12.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.3.2
+  audioplayers: ^6.1.0
+  flame: ^1.38.2
+  flame_forge2d: ^0.20.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/fox_animations.png
+    - assets/images/fox_hero_animations.png
+    - assets/images/forest_slime_animations.png
+    - assets/images/sun_coin_animations.png
+    - assets/images/adventure_tiles_atlas.png
